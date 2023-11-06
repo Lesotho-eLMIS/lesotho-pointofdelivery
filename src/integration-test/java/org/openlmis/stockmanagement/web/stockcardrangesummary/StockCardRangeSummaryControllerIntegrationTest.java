@@ -13,7 +13,7 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.web.stockcardrangesummary;
+package org.openlmis.pointofdelivery.web.stockcardrangesummary;
 
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
@@ -34,19 +34,19 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
-import org.openlmis.stockmanagement.domain.card.StockCard;
-import org.openlmis.stockmanagement.domain.event.CalculatedStockOnHand;
-import org.openlmis.stockmanagement.domain.event.StockEvent;
-import org.openlmis.stockmanagement.exception.PermissionMessageException;
-import org.openlmis.stockmanagement.service.StockCardAggregate;
-import org.openlmis.stockmanagement.service.StockCardSummariesService;
-import org.openlmis.stockmanagement.testutils.CalculatedStockOnHandDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockCardDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockCardRangeSummaryDtoDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockEventDataBuilder;
-import org.openlmis.stockmanagement.util.Message;
-import org.openlmis.stockmanagement.util.PageDto;
-import org.openlmis.stockmanagement.web.BaseWebIntegrationTest;
+import org.openlmis.pointofdelivery.domain.card.StockCard;
+import org.openlmis.pointofdelivery.domain.event.CalculatedStockOnHand;
+import org.openlmis.pointofdelivery.domain.event.StockEvent;
+import org.openlmis.pointofdelivery.exception.PermissionMessageException;
+import org.openlmis.pointofdelivery.service.StockCardAggregate;
+import org.openlmis.pointofdelivery.service.StockCardSummariesService;
+import org.openlmis.pointofdelivery.testutils.CalculatedStockOnHandDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockCardDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockCardRangeSummaryDtoDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockEventDataBuilder;
+import org.openlmis.pointofdelivery.util.Message;
+import org.openlmis.pointofdelivery.util.PageDto;
+import org.openlmis.pointofdelivery.web.BaseWebIntegrationTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

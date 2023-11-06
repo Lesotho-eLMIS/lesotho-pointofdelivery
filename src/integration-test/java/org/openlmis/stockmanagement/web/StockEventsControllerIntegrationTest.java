@@ -13,14 +13,14 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.web;
+package org.openlmis.pointofdelivery.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.openlmis.stockmanagement.i18n.MessageKeys.ERROR_REASON_ASSIGNMENT_NOT_FOUND;
+import static org.openlmis.pointofdelivery.i18n.MessageKeys.ERROR_REASON_ASSIGNMENT_NOT_FOUND;
 
 import guru.nidi.ramltester.junit.RamlMatchers;
 import java.time.LocalDate;
@@ -30,12 +30,12 @@ import java.util.HashMap;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
-import org.openlmis.stockmanagement.dto.StockEventDto;
-import org.openlmis.stockmanagement.dto.StockEventLineItemDto;
-import org.openlmis.stockmanagement.exception.ValidationMessageException;
-import org.openlmis.stockmanagement.service.HomeFacilityPermissionService;
-import org.openlmis.stockmanagement.service.StockEventProcessor;
-import org.openlmis.stockmanagement.service.StockEventValidationsService;
+import org.openlmis.pointofdelivery.dto.StockEventDto;
+import org.openlmis.pointofdelivery.dto.StockEventLineItemDto;
+import org.openlmis.pointofdelivery.exception.ValidationMessageException;
+import org.openlmis.pointofdelivery.service.HomeFacilityPermissionService;
+import org.openlmis.pointofdelivery.service.StockEventProcessor;
+import org.openlmis.pointofdelivery.service.StockEventValidationsService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 

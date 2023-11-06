@@ -1,11 +1,11 @@
 #!/bin/bash
 
-docker pull openlmis/stockmanagement
+docker pull openlmis/pointofdelivery
 #the image might be built on the jenkins slave, so we need to pull here to make sure it's using the latest
 
 # prepare ERD folder on CI server
-sudo mkdir -p /var/www/html/erd-stockmanagement
-sudo chown -R $USER:$USER /var/www/html/erd-stockmanagement
+sudo mkdir -p /var/www/html/erd-pointofdelivery
+sudo chown -R $USER:$USER /var/www/html/erd-pointofdelivery
 
 # General steps:
 # - Copy env file and remove demo data profiles (errors happen during startup when they are enabled)
@@ -20,20 +20,20 @@ sudo chown -R $USER:$USER /var/www/html/erd-stockmanagement
 # - Clean up files and folders
 wget https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/settings-sample.env -O .env \
 && sed -i -e "s/^spring_profiles_active=demo-data,refresh-db/spring_profiles_active=/" .env \
-&& wget https://raw.githubusercontent.com/OpenLMIS/openlmis-stockmanagement/master/docker-compose.erd-generation.yml -O docker-compose.yml \
+&& wget https://raw.githubusercontent.com/OpenLMIS/openlmis-pointofdelivery/master/docker-compose.erd-generation.yml -O docker-compose.yml \
 && (/usr/local/bin/docker-compose up &) \
 && sleep 90 \
-&& sudo rm /var/www/html/erd-stockmanagement/* -rf \
+&& sudo rm /var/www/html/erd-pointofdelivery/* -rf \
 && mkdir output \
 && chmod 777 output \
-&& (docker run --rm --network openlmisstockmanagementerdgeneration_default -v $WORKSPACE/output:/output schemaspy/schemaspy:snapshot -t pgsql -host db -port 5432 -db open_lmis -s stockmanagement -u postgres -p $DBPASSWORD -I "(data_loaded)|(schema_version)|(jv_.*)" -norows -hq &) \
+&& (docker run --rm --network openlmispointofdeliveryerdgeneration_default -v $WORKSPACE/output:/output schemaspy/schemaspy:snapshot -t pgsql -host db -port 5432 -db open_lmis -s pointofdelivery -u postgres -p $DBPASSWORD -I "(data_loaded)|(schema_version)|(jv_.*)" -norows -hq &) \
 && sleep 30 \
 && /usr/local/bin/docker-compose down --volumes \
 && sudo chown -R $USER:$USER output \
-&& mv output/* /var/www/html/erd-stockmanagement \
-&& rm erd-stockmanagement.zip -f \
-&& pushd /var/www/html/erd-stockmanagement \
-&& zip -r $WORKSPACE/erd-stockmanagement.zip . \
+&& mv output/* /var/www/html/erd-pointofdelivery \
+&& rm erd-pointofdelivery.zip -f \
+&& pushd /var/www/html/erd-pointofdelivery \
+&& zip -r $WORKSPACE/erd-pointofdelivery.zip . \
 && popd \
 && rmdir output \
 && rm .env \

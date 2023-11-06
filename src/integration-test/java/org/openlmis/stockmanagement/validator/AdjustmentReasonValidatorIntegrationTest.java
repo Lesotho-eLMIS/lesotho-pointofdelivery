@@ -13,10 +13,10 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.validator;
+package org.openlmis.pointofdelivery.validator;
 
-import static org.openlmis.stockmanagement.i18n.MessageKeys.ERROR_EVENT_ADJUSTMENT_REASON_CATEGORY_INVALID;
-import static org.openlmis.stockmanagement.i18n.MessageKeys.ERROR_EVENT_ADJUSTMENT_REASON_TYPE_INVALID;
+import static org.openlmis.pointofdelivery.i18n.MessageKeys.ERROR_EVENT_ADJUSTMENT_REASON_CATEGORY_INVALID;
+import static org.openlmis.pointofdelivery.i18n.MessageKeys.ERROR_EVENT_ADJUSTMENT_REASON_TYPE_INVALID;
 
 import java.util.UUID;
 import org.junit.Before;
@@ -24,15 +24,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.openlmis.stockmanagement.BaseIntegrationTest;
-import org.openlmis.stockmanagement.domain.reason.ReasonCategory;
-import org.openlmis.stockmanagement.domain.reason.ReasonType;
-import org.openlmis.stockmanagement.domain.reason.StockCardLineItemReason;
-import org.openlmis.stockmanagement.dto.StockEventDto;
-import org.openlmis.stockmanagement.exception.ValidationMessageException;
-import org.openlmis.stockmanagement.repository.StockCardLineItemReasonRepository;
-import org.openlmis.stockmanagement.testutils.StockEventDtoDataBuilder;
-import org.openlmis.stockmanagement.validators.DefaultAdjustmentReasonValidator;
+import org.openlmis.pointofdelivery.BaseIntegrationTest;
+import org.openlmis.pointofdelivery.domain.reason.ReasonCategory;
+import org.openlmis.pointofdelivery.domain.reason.ReasonType;
+import org.openlmis.pointofdelivery.domain.reason.StockCardLineItemReason;
+import org.openlmis.pointofdelivery.dto.StockEventDto;
+import org.openlmis.pointofdelivery.exception.ValidationMessageException;
+import org.openlmis.pointofdelivery.repository.StockCardLineItemReasonRepository;
+import org.openlmis.pointofdelivery.testutils.StockEventDtoDataBuilder;
+import org.openlmis.pointofdelivery.validators.DefaultAdjustmentReasonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;

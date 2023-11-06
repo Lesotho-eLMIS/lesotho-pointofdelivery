@@ -13,7 +13,7 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.web;
+package org.openlmis.pointofdelivery.web;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotEquals;
@@ -34,15 +34,15 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
-import org.openlmis.stockmanagement.domain.reason.ReasonType;
-import org.openlmis.stockmanagement.domain.reason.StockCardLineItemReason;
-import org.openlmis.stockmanagement.domain.reason.ValidReasonAssignment;
-import org.openlmis.stockmanagement.dto.ValidReasonAssignmentDto;
-import org.openlmis.stockmanagement.repository.ValidReasonAssignmentRepository;
-import org.openlmis.stockmanagement.service.referencedata.ProgramFacilityTypeExistenceService;
-import org.openlmis.stockmanagement.testutils.StockCardLineItemReasonDataBuilder;
-import org.openlmis.stockmanagement.testutils.ValidReasonAssignmentDataBuilder;
-import org.openlmis.stockmanagement.web.BaseWebTest.SaveAnswer;
+import org.openlmis.pointofdelivery.domain.reason.ReasonType;
+import org.openlmis.pointofdelivery.domain.reason.StockCardLineItemReason;
+import org.openlmis.pointofdelivery.domain.reason.ValidReasonAssignment;
+import org.openlmis.pointofdelivery.dto.ValidReasonAssignmentDto;
+import org.openlmis.pointofdelivery.repository.ValidReasonAssignmentRepository;
+import org.openlmis.pointofdelivery.service.referencedata.ProgramFacilityTypeExistenceService;
+import org.openlmis.pointofdelivery.testutils.StockCardLineItemReasonDataBuilder;
+import org.openlmis.pointofdelivery.testutils.ValidReasonAssignmentDataBuilder;
+import org.openlmis.pointofdelivery.web.BaseWebTest.SaveAnswer;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

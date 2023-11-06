@@ -1,15 +1,15 @@
 {
   "service": {
-    "Name": "stockmanagement",
+    "Name": "pointofdelivery",
     "Port": 8080,
     "Tags": ["openlmis-service"]
   },
   "raml": "src/main/resources/api-definition.yaml",
   "path": [
-    "stockmanagement",
-    "stockmanagement/docs",
-    "stockmanagement/docs/<all>",
-    "stockmanagement/webjars",
-    "stockmanagement/webjars/<all>"
+    "pointofdelivery",
+    "pointofdelivery/docs",
+    "pointofdelivery/docs/<all>",
+    "pointofdelivery/webjars",
+    "pointofdelivery/webjars/<all>"
   ]
 }

@@ -13,7 +13,7 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.repository;
+package org.openlmis.pointofdelivery.repository;
 
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.openlmis.stockmanagement.domain.card.StockCard;
-import org.openlmis.stockmanagement.domain.event.CalculatedStockOnHand;
-import org.openlmis.stockmanagement.domain.event.StockEvent;
-import org.openlmis.stockmanagement.testutils.CalculatedStockOnHandDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockCardDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockEventDataBuilder;
+import org.openlmis.pointofdelivery.domain.card.StockCard;
+import org.openlmis.pointofdelivery.domain.event.CalculatedStockOnHand;
+import org.openlmis.pointofdelivery.domain.event.StockEvent;
+import org.openlmis.pointofdelivery.testutils.CalculatedStockOnHandDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockCardDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockEventDataBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 

@@ -13,7 +13,7 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.web.stockcardsummariesv2;
+package org.openlmis.pointofdelivery.web.stockcardsummariesv2;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -28,16 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openlmis.stockmanagement.exception.PermissionMessageException;
-import org.openlmis.stockmanagement.service.StockCardSummaries;
-import org.openlmis.stockmanagement.service.StockCardSummariesService;
-import org.openlmis.stockmanagement.service.StockCardSummariesV2SearchParams;
-import org.openlmis.stockmanagement.testutils.CanFulfillForMeEntryDtoDataBuilder;
-import org.openlmis.stockmanagement.testutils.ObjectGenerator;
-import org.openlmis.stockmanagement.testutils.StockCardSummariesV2SearchParamsDataBuilder;
-import org.openlmis.stockmanagement.testutils.StockCardSummaryV2DtoDataBuilder;
-import org.openlmis.stockmanagement.util.Message;
-import org.openlmis.stockmanagement.web.BaseWebTest;
+import org.openlmis.pointofdelivery.exception.PermissionMessageException;
+import org.openlmis.pointofdelivery.service.StockCardSummaries;
+import org.openlmis.pointofdelivery.service.StockCardSummariesService;
+import org.openlmis.pointofdelivery.service.StockCardSummariesV2SearchParams;
+import org.openlmis.pointofdelivery.testutils.CanFulfillForMeEntryDtoDataBuilder;
+import org.openlmis.pointofdelivery.testutils.ObjectGenerator;
+import org.openlmis.pointofdelivery.testutils.StockCardSummariesV2SearchParamsDataBuilder;
+import org.openlmis.pointofdelivery.testutils.StockCardSummaryV2DtoDataBuilder;
+import org.openlmis.pointofdelivery.util.Message;
+import org.openlmis.pointofdelivery.web.BaseWebTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

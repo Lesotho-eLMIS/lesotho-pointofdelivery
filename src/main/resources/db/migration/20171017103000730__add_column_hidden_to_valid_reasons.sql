@@ -1,1 +1,0 @@
-ALTER TABLE valid_reason_assignments ADD COLUMN hidden boolean NOT NULL DEFAULT FALSE;

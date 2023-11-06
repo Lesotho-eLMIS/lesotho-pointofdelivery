@@ -13,7 +13,7 @@
  * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
-package org.openlmis.stockmanagement.web;
+package org.openlmis.pointofdelivery.web;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -21,8 +21,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.openlmis.stockmanagement.web.utils.WireMockResponses.MOCK_CHECK_RESULT;
-import static org.openlmis.stockmanagement.web.utils.WireMockResponses.MOCK_TOKEN_REQUEST_RESPONSE;
+import static org.openlmis.pointofdelivery.web.utils.WireMockResponses.MOCK_CHECK_RESULT;
+import static org.openlmis.pointofdelivery.web.utils.WireMockResponses.MOCK_TOKEN_REQUEST_RESPONSE;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,11 +37,11 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
-import org.openlmis.stockmanagement.dto.referencedata.UserDto;
-import org.openlmis.stockmanagement.repository.StockCardLineItemReasonRepository;
-import org.openlmis.stockmanagement.service.PermissionService;
-import org.openlmis.stockmanagement.service.StockCardLineItemReasonService;
-import org.openlmis.stockmanagement.util.AuthenticationHelper;
+import org.openlmis.pointofdelivery.dto.referencedata.UserDto;
+import org.openlmis.pointofdelivery.repository.StockCardLineItemReasonRepository;
+import org.openlmis.pointofdelivery.service.PermissionService;
+import org.openlmis.pointofdelivery.service.StockCardLineItemReasonService;
+import org.openlmis.pointofdelivery.util.AuthenticationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

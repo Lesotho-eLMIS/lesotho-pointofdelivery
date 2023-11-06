@@ -1,8 +1,8 @@
 version: "2"
 services:
 
-  stockmanagement:
-    image: openlmis/stockmanagement
+  pointofdelivery:
+    image: openlmis/pointofdelivery
     links:
       - db
       - log
@@ -17,4 +17,4 @@ services:
   log:
     image: openlmis/rsyslog:1
     volumes:
-      - '../logs/stockmanagement:/var/log'
+      - '../logs/pointofdelivery:/var/log'

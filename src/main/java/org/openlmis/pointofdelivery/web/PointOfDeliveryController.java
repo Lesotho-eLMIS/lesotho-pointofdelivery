@@ -93,7 +93,7 @@ public class PointOfDeliveryController extends BaseController {
   /**
    * List point of delivery event.
    *
-   * @param destinationId a pod event bound to request body.
+   * @param destinationId a destination facility id.
    * @return List of pod events.
    */
   @RequestMapping(method = GET)

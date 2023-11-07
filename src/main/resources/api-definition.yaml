@@ -28,6 +28,11 @@ schemas:
        }
   - geographicZone: !include schemas/geographicZone.json
   - pointOfDeliveryEventDto: !include schemas/pointOfDeliveryEventDto.json
+  - pointOfDeliveryEventDtos: |
+        {
+            "type": "array",
+            "items": {"type": "object", "$ref": "schemas/pointOfDeliveryEventDto.json"}
+        }
 
   - validSourceDestination: !include schemas/validSourceDestination.json
   - validSourceDestinations: |
@@ -152,6 +157,36 @@ traits:
 
 /api:
   /podEvents:
+      get:
+        is: [ secured ]
+        description: Get a list of point of delivery events
+        queryParameters:
+          destinationId:
+            required: true
+          
+        responses:
+          200:
+            description: |
+              Returns a default templte with all fields set to not display when no query parameters are passed.
+
+              Returns template that matches destination id.
+            headers:
+              X-Content-Type-Options:
+              X-XSS-Protection:
+            body:
+              application/json:
+                schema: pointOfDeliveryEventDtos
+          404:
+            description: Point of delivery events not found for the given query parameter.
+            body:
+              application/json:
+                schema: localizedMessage
+          400:
+            body:
+              application/json:
+                  schema: localizedMessage
+            description: Provided query parameters are not correctly formatted.
+
       post:
         is: [ secured ]
         description: Create a new point of delivery event.
@@ -180,36 +215,6 @@ traits:
               application/json:
                   schema: localizedMessage
 
-      get:
-        is: [ secured ]
-        description: Get a list of point of delivery events
-        queryParameters:
-          destinationId:
-            required: true
-          
-        responses:
-          200:
-            description: |
-              Returns a default templte with all fields set to not display when no query parameters are passed.
-
-              Returns template that matches destination id.
-            headers:
-              X-Content-Type-Options:
-              X-XSS-Protection:
-            body:
-              application/json:
-                schema: pointOfDeliveryEventDto
-          404:
-            description: Point of delivery events not found for the given query parameter.
-            body:
-              application/json:
-                schema: localizedMessage
-          400:
-            body:
-              application/json:
-                  schema: localizedMessage
-            description: Provided query parameters are not correctly formatted.
-      
       /{id}:
         uriParameters:
           id:

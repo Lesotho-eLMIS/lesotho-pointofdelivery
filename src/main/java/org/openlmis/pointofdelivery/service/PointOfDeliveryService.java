@@ -22,7 +22,9 @@ import java.util.UUID;
 
 import org.openlmis.pointofdelivery.domain.event.PointOfDeliveryEvent;
 import org.openlmis.pointofdelivery.dto.PointOfDeliveryEventDto;
+import org.openlmis.pointofdelivery.exception.ResourceNotFoundException;
 import org.openlmis.pointofdelivery.repository.PointOfDeliveryEventsRepository;
+import org.openlmis.pointofdelivery.util.Message;
 import org.openlmis.pointofdelivery.util.PointOfDeliveryEventProcessContext;
 
 import org.slf4j.Logger;
@@ -47,7 +49,7 @@ public class PointOfDeliveryService {
    * @return a list of pod events.
    */
   public List<PointOfDeliveryEventDto> getPointOfDeliveryEventsByDestinationId(UUID destinationId) {
-    List<PointOfDeliveryEvent> pointOfDeliveryEvents =  pointOfDeliveryEventsRepository
+    List<PointOfDeliveryEvent> pointOfDeliveryEvents = pointOfDeliveryEventsRepository
         .findByDestinationId(destinationId);
     
     if (pointOfDeliveryEvents == null) {
@@ -123,5 +125,29 @@ public class PointOfDeliveryService {
       existingPodEvent.setRemarks(incomingPodEvent.getRemarks());
     }
     return existingPodEvent;
+  }
+
+  /**
+   * Delete POD.
+   *
+   * @param id POD event id.
+   */
+  public void deletePointOfDeliveryEvent(UUID id) {
+    //LOGGER.info("update POS event");
+    //physicalInventoryValidator.validateDraft(dto, id);
+    //checkPermission(dto.getProgramId(), dto.getFacilityId());
+
+    //checkIfDraftExists(dto, id);
+    
+    LOGGER.info("Attempting to fetch pod event with id = " + id);
+    Optional<PointOfDeliveryEvent> existingPodEventOpt = 
+        pointOfDeliveryEventsRepository.findById(id);
+
+    if (existingPodEventOpt.isPresent()) {
+      //delete pod event
+      pointOfDeliveryEventsRepository.delete(existingPodEventOpt.get());
+    } else {
+      throw new ResourceNotFoundException(new Message("Point of delivery event not found ", id));
+    }
   }
 }

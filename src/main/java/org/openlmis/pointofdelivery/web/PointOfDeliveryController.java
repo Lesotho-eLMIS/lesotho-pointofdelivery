@@ -16,6 +16,7 @@
 package org.openlmis.pointofdelivery.web;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -36,6 +37,7 @@ import org.springframework.http.ResponseEntity;
 // import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +47,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Controller used to create point of delivery event.
+ * Controller used to perform CRUD operations on point of delivery event.
  */
 @Controller
 @RequestMapping("/api/podEvents")
@@ -133,6 +135,17 @@ public class PointOfDeliveryController extends BaseController {
     PointOfDeliveryEventDto updatedPodEvent = pointOfDeliveryService
         .updatePointOfDeliveryEvent(dto, id);
     return new ResponseEntity<>(updatedPodEvent, OK);
+  }
+
+  /**
+   * Delete a POD event.
+   *
+   * @param id POD event id.
+   */
+  @DeleteMapping(ID_PATH_VARIABLE)
+  @ResponseStatus(NO_CONTENT)
+  public void deletePointOfDeliveryEvent(@PathVariable UUID id) {
+    pointOfDeliveryService.deletePointOfDeliveryEvent(id);
   }
 
 }

@@ -40,6 +40,7 @@ public class PointOfDeliveryEvent extends BaseEntity {
   private String destinationFreeText;
 
   private UUID receivedByUserId;
+  private String receivedByUserNames;
 
   @Column(nullable = false, columnDefinition = "timestamp")
   private ZonedDateTime receivingDate;

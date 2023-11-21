@@ -31,10 +31,15 @@ import org.openlmis.pointofdelivery.dto.referencedata.FacilityDto;
 public class PointOfDeliveryEventProcessContext {
 
   private LazyResource<UUID> currentUserId;
+  private LazyResource<String> currentUserNames;
   private LazyResource<FacilityDto> facility;
 
   public UUID getCurrentUserId() {
     return currentUserId.get();
+  }
+
+  public String getCurrentUserNames() {
+    return currentUserNames.get();
   }
 
   public FacilityDto getFacility() {

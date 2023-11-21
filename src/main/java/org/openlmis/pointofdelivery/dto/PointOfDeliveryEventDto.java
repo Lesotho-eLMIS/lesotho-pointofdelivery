@@ -49,6 +49,7 @@ public class PointOfDeliveryEventDto {
   private String destinationFreeText;
 
   private UUID receivedByUserId;
+  private String receivedByUserNames;
 
   private ZonedDateTime receivingDate;
 
@@ -74,7 +75,8 @@ public class PointOfDeliveryEventDto {
   public PointOfDeliveryEvent toPointOfDeliveryEvent() {
     PointOfDeliveryEvent pointOfDeliveryEvent = new PointOfDeliveryEvent(
         sourceId, sourceFreeText, destinationId, destinationFreeText, 
-        context.getCurrentUserId(), now(), referenceNumber, packingDate,
+        context.getCurrentUserId(), context.getCurrentUserNames(), now(), 
+        referenceNumber, packingDate,
         packedBy, numberOfCartons, numberOfContainers, remarks);
     return pointOfDeliveryEvent;
   }
@@ -107,6 +109,7 @@ public class PointOfDeliveryEventDto {
       .destinationId(pointOfDeliveryEvent.getDestinationId())
       .destinationFreeText(pointOfDeliveryEvent.getDestinationFreeText())
       .receivedByUserId(pointOfDeliveryEvent.getReceivedByUserId())
+      .receivedByUserNames(pointOfDeliveryEvent.getReceivedByUserNames())
       .receivingDate(pointOfDeliveryEvent.getReceivingDate())
       .referenceNumber(pointOfDeliveryEvent.getReferenceNumber())
       .packingDate(pointOfDeliveryEvent.getPackingDate())

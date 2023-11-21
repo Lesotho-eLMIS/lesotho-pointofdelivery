@@ -82,15 +82,22 @@ public class PointOfDeliveryEventProcessContextBuilder {
         .getAuthentication();
 
     Supplier<UUID> userIdSupplier;
+    Supplier<String> userNamesSupplier;
 
     if (authentication.isClientOnly()) {
       userIdSupplier = pointOfDeliveryEventDto::getReceivedByUserId;
+      userNamesSupplier = pointOfDeliveryEventDto::getReceivedByUserNames;
     } else {
       userIdSupplier = () -> authenticationHelper.getCurrentUser().getId();
+      userNamesSupplier = () -> authenticationHelper.getCurrentUser().getFirstName() 
+          + ", " + authenticationHelper.getCurrentUser().getLastName();
     }
 
     LazyResource<UUID> userId = new LazyResource<>(userIdSupplier);
     context.setCurrentUserId(userId);
+
+    LazyResource<String> userNames = new LazyResource<>(userNamesSupplier);
+    context.setCurrentUserNames(userNames);
 
     profiler.start("CREATE_LAZY_FACILITY");
     UUID facilityId = pointOfDeliveryEventDto.getDestinationId();

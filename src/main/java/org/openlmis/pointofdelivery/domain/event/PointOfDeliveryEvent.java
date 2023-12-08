@@ -17,9 +17,14 @@ package org.openlmis.pointofdelivery.domain.event;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import java.util.UUID;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +61,17 @@ public class PointOfDeliveryEvent extends BaseEntity {
 
   private Integer numberOfContainers;
 
+  private Integer numberOfCartonsRejected;
+
+  private Integer numberOfContainersRejected;
+
   private String remarks;
+
+  @ElementCollection(fetch = FetchType.LAZY, targetClass = UUID.class)
+  @CollectionTable(
+      name = "pod_events_rejection_reasons", 
+      joinColumns = @JoinColumn(name = "pod_event_id"))
+  @Column(name = "rejection_reason_id")
+  private Set<UUID> rejectionReasonIds;
 
 }

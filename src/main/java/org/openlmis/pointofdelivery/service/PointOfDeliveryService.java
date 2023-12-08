@@ -15,6 +15,8 @@
 
 package org.openlmis.pointofdelivery.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,10 @@ import java.util.UUID;
 
 import org.openlmis.pointofdelivery.domain.event.PointOfDeliveryEvent;
 import org.openlmis.pointofdelivery.dto.PointOfDeliveryEventDto;
+import org.openlmis.pointofdelivery.dto.requisition.RejectionReasonDto;
 import org.openlmis.pointofdelivery.exception.ResourceNotFoundException;
 import org.openlmis.pointofdelivery.repository.PointOfDeliveryEventsRepository;
+import org.openlmis.pointofdelivery.service.requisition.RejectionReasonService;
 import org.openlmis.pointofdelivery.util.Message;
 import org.openlmis.pointofdelivery.util.PointOfDeliveryEventProcessContext;
 
@@ -42,6 +46,9 @@ public class PointOfDeliveryService {
   @Autowired
   private PointOfDeliveryEventProcessContextBuilder contextBuilder;
 
+  @Autowired
+  private RejectionReasonService rejectionReasonService;
+
   /**
    * Get a list of Point of Delivery events.
    *
@@ -55,7 +62,7 @@ public class PointOfDeliveryService {
     if (pointOfDeliveryEvents == null) {
       return Collections.emptyList();
     }
-    return PointOfDeliveryEventDto.podToDto(pointOfDeliveryEvents);
+    return podToDto(pointOfDeliveryEvents);
   }
 
   /**
@@ -86,7 +93,7 @@ public class PointOfDeliveryService {
     
       //save updated pod event
       pointOfDeliveryEventsRepository.save(existingPodEvent);
-      return PointOfDeliveryEventDto.podToDto(existingPodEvent);
+      return podToDto(existingPodEvent);
     } else {
       return null;
     }
@@ -121,8 +128,18 @@ public class PointOfDeliveryService {
     if (incomingPodEvent.getNumberOfContainers() != null) {
       existingPodEvent.setNumberOfContainers(incomingPodEvent.getNumberOfContainers());
     }
+    if (incomingPodEvent.getNumberOfCartonsRejected() != null) {
+      existingPodEvent.setNumberOfCartonsRejected(incomingPodEvent.getNumberOfCartonsRejected());
+    }
+    if (incomingPodEvent.getNumberOfContainersRejected() != null) {
+      existingPodEvent.setNumberOfContainersRejected(
+          incomingPodEvent.getNumberOfContainersRejected());
+    }
     if (incomingPodEvent.getRemarks() != null) {
       existingPodEvent.setRemarks(incomingPodEvent.getRemarks());
+    }
+    if (incomingPodEvent.getRejectionReasonIds() != null) {
+      existingPodEvent.setRejectionReasonIds(incomingPodEvent.getRejectionReasonIds());
     }
     return existingPodEvent;
   }
@@ -150,4 +167,51 @@ public class PointOfDeliveryService {
       throw new ResourceNotFoundException(new Message("Point of delivery event not found ", id));
     }
   }
+
+  /**
+   * Create from jpa model.
+   *
+   * @param pointOfDeliveryEvents inventory jpa model.
+   * @return created dto.
+   */
+  private List<PointOfDeliveryEventDto> podToDto(
+        Collection<PointOfDeliveryEvent> pointOfDeliveryEvents) {
+
+    List<PointOfDeliveryEventDto> podDtos = new ArrayList<>(pointOfDeliveryEvents.size());
+    pointOfDeliveryEvents.forEach(i -> podDtos.add(podToDto(i)));
+    return podDtos;
+  }
+
+  /**
+   * Create from jpa model.
+   *
+   * @param pointOfDeliveryEvent inventory jpa model.
+   * @return created dto.
+   */
+  private PointOfDeliveryEventDto podToDto(PointOfDeliveryEvent pointOfDeliveryEvent) {
+    List<RejectionReasonDto> rejectionReasonDtos = new ArrayList<>();
+    for (UUID rejectionId : pointOfDeliveryEvent.getRejectionReasonIds()) {
+      rejectionReasonDtos.add(rejectionReasonService.findOne(rejectionId));
+    }
+    return PointOfDeliveryEventDto.builder()
+      .id(pointOfDeliveryEvent.getId())
+      .sourceId(pointOfDeliveryEvent.getSourceId())
+      .sourceFreeText(pointOfDeliveryEvent.getSourceFreeText())
+      .destinationId(pointOfDeliveryEvent.getDestinationId())
+      .destinationFreeText(pointOfDeliveryEvent.getDestinationFreeText())
+      .receivedByUserId(pointOfDeliveryEvent.getReceivedByUserId())
+      .receivedByUserNames(pointOfDeliveryEvent.getReceivedByUserNames())
+      .receivingDate(pointOfDeliveryEvent.getReceivingDate())
+      .referenceNumber(pointOfDeliveryEvent.getReferenceNumber())
+      .packingDate(pointOfDeliveryEvent.getPackingDate())
+      .packedBy(pointOfDeliveryEvent.getPackedBy())
+      .numberOfCartons(pointOfDeliveryEvent.getNumberOfCartons())
+      .numberOfContainers(pointOfDeliveryEvent.getNumberOfContainers())
+      .numberOfCartonsRejected(pointOfDeliveryEvent.getNumberOfCartonsRejected())
+      .numberOfContainersRejected(pointOfDeliveryEvent.getNumberOfContainersRejected())
+      .remarks(pointOfDeliveryEvent.getRemarks())
+      .rejectionReasons(rejectionReasonDtos)
+      .build();
+  }
+
 }

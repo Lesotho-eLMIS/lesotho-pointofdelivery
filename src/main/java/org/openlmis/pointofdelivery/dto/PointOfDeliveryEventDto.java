@@ -20,9 +20,9 @@ import static java.time.ZonedDateTime.now;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -31,14 +31,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.openlmis.pointofdelivery.domain.event.PointOfDeliveryEvent;
+import org.openlmis.pointofdelivery.dto.requisition.RejectionReasonDto;
+import org.openlmis.pointofdelivery.service.requisition.RejectionReasonService;
 import org.openlmis.pointofdelivery.util.PointOfDeliveryEventProcessContext;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PointOfDeliveryEventDto {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(PointOfDeliveryEventDto.class);
+  private static RejectionReasonService rejectionReasonService = new RejectionReasonService();
 
   private UUID id;
 
@@ -63,7 +69,14 @@ public class PointOfDeliveryEventDto {
 
   private Integer numberOfContainers;
 
+  private Integer numberOfCartonsRejected;
+
+  private Integer numberOfContainersRejected;
+
   private String remarks;
+
+  //private List<UUID> rejectionReasonIds;
+  private List<RejectionReasonDto> rejectionReasons;
 
   private PointOfDeliveryEventProcessContext context;
 
@@ -73,52 +86,70 @@ public class PointOfDeliveryEventDto {
    * @return the converted jpa model object.
    */
   public PointOfDeliveryEvent toPointOfDeliveryEvent() {
+    Set<UUID> rejectionReasonIds = new HashSet<>();
+    for (RejectionReasonDto rejectionReasonDto : rejectionReasons) {
+      rejectionReasonIds.add(rejectionReasonDto.getId());
+    }
     PointOfDeliveryEvent pointOfDeliveryEvent = new PointOfDeliveryEvent(
         sourceId, sourceFreeText, destinationId, destinationFreeText, 
         context.getCurrentUserId(), context.getCurrentUserNames(), now(), 
-        referenceNumber, packingDate,
-        packedBy, numberOfCartons, numberOfContainers, remarks);
+        referenceNumber, packingDate, packedBy, numberOfCartons, 
+        numberOfContainers, numberOfCartonsRejected,
+        numberOfContainersRejected, remarks, rejectionReasonIds);
     return pointOfDeliveryEvent;
   }
 
-  /**
-   * Create from jpa model.
-   *
-   * @param pointOfDeliveryEvents inventory jpa model.
-   * @return created dto.
-   */
-  public static List<PointOfDeliveryEventDto> podToDto(
-        Collection<PointOfDeliveryEvent> pointOfDeliveryEvents) {
+  // /**
+  //  * Create from jpa model.
+  //  *
+  //  * @param pointOfDeliveryEvents inventory jpa model.
+  //  * @return created dto.
+  //  */
+  // public static List<PointOfDeliveryEventDto> podToDto(
+  //       Collection<PointOfDeliveryEvent> pointOfDeliveryEvents) {
 
-    List<PointOfDeliveryEventDto> podDtos = new ArrayList<>(pointOfDeliveryEvents.size());
-    pointOfDeliveryEvents.forEach(i -> podDtos.add(podToDto(i)));
-    return podDtos;
-  }
+  //   List<PointOfDeliveryEventDto> podDtos = new ArrayList<>(pointOfDeliveryEvents.size());
+  //   pointOfDeliveryEvents.forEach(i -> podDtos.add(podToDto(i)));
+  //   return podDtos;
+  // }
 
-  /**
-   * Create from jpa model.
-   *
-   * @param pointOfDeliveryEvent inventory jpa model.
-   * @return created dto.
-   */
-  public static PointOfDeliveryEventDto podToDto(PointOfDeliveryEvent pointOfDeliveryEvent) {
-    return PointOfDeliveryEventDto.builder()
-      .id(pointOfDeliveryEvent.getId())
-      .sourceId(pointOfDeliveryEvent.getSourceId())
-      .sourceFreeText(pointOfDeliveryEvent.getSourceFreeText())
-      .destinationId(pointOfDeliveryEvent.getDestinationId())
-      .destinationFreeText(pointOfDeliveryEvent.getDestinationFreeText())
-      .receivedByUserId(pointOfDeliveryEvent.getReceivedByUserId())
-      .receivedByUserNames(pointOfDeliveryEvent.getReceivedByUserNames())
-      .receivingDate(pointOfDeliveryEvent.getReceivingDate())
-      .referenceNumber(pointOfDeliveryEvent.getReferenceNumber())
-      .packingDate(pointOfDeliveryEvent.getPackingDate())
-      .packedBy(pointOfDeliveryEvent.getPackedBy())
-      .numberOfCartons(pointOfDeliveryEvent.getNumberOfCartons())
-      .numberOfContainers(pointOfDeliveryEvent.getNumberOfContainers())
-      .remarks(pointOfDeliveryEvent.getRemarks())
-      .build();
-  }
+  // /**
+  //  * Create from jpa model.
+  //  *
+  //  * @param pointOfDeliveryEvent inventory jpa model.
+  //  * @return created dto.
+  //  */
+  // public static PointOfDeliveryEventDto podToDto(PointOfDeliveryEvent pointOfDeliveryEvent) {
+  //   List<RejectionReasonDto> rejectionReasonDtos = new ArrayList<>();
+  //   Set<UUID> rejectionReasonIds = pointOfDeliveryEvent.getRejectionReasonIds();
+  //   LOGGER.error("There are " + rejectionReasonIds.size() + " rejection reasons.");
+  //   rejectionReasonDtos = rejectionReasonService.getRejectionReasons(rejectionReasonIds);
+  //   // for (UUID rejectionId : pointOfDeliveryEvent.getRejectionReasonIds()) {
+  //   //   LOGGER.error("Fetching" + rejectionId);
+  //   //   LOGGER.error("API call response: " + rejectionReasonService.findOne(rejectionId));
+  //   //   //rejectionReasonDtos.add(rejectionReasonService.findOne(rejectionId));
+  //   // }
+  //   return PointOfDeliveryEventDto.builder()
+  //     .id(pointOfDeliveryEvent.getId())
+  //     .sourceId(pointOfDeliveryEvent.getSourceId())
+  //     .sourceFreeText(pointOfDeliveryEvent.getSourceFreeText())
+  //     .destinationId(pointOfDeliveryEvent.getDestinationId())
+  //     .destinationFreeText(pointOfDeliveryEvent.getDestinationFreeText())
+  //     .receivedByUserId(pointOfDeliveryEvent.getReceivedByUserId())
+  //     .receivedByUserNames(pointOfDeliveryEvent.getReceivedByUserNames())
+  //     .receivingDate(pointOfDeliveryEvent.getReceivingDate())
+  //     .referenceNumber(pointOfDeliveryEvent.getReferenceNumber())
+  //     .packingDate(pointOfDeliveryEvent.getPackingDate())
+  //     .packedBy(pointOfDeliveryEvent.getPackedBy())
+  //     .numberOfCartons(pointOfDeliveryEvent.getNumberOfCartons())
+  //     .numberOfContainers(pointOfDeliveryEvent.getNumberOfContainers())
+  //     .numberOfCartonsRejected(pointOfDeliveryEvent.getNumberOfCartonsRejected())
+  //     .numberOfContainersRejected(pointOfDeliveryEvent.getNumberOfContainersRejected())
+  //     .remarks(pointOfDeliveryEvent.getRemarks())
+  //     //.rejectionReasonIds(pointOfDeliveryEvent.getRejectionReasonIds())
+  //     .rejectionReasons(rejectionReasonDtos)
+  //     .build();
+  // }
 
   public boolean hasSourceId() {
     return this.sourceId != null;
@@ -127,6 +158,8 @@ public class PointOfDeliveryEventDto {
   public boolean hasDestinationId() {
     return this.destinationId != null;
   }
+
+  
 
 
 }

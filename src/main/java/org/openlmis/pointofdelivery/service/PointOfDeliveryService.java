@@ -183,7 +183,7 @@ public class PointOfDeliveryService {
   }
 
   /**
-   * Create from jpa model.
+   * Create dto from jpa model.
    *
    * @param pointOfDeliveryEvent inventory jpa model.
    * @return created dto.

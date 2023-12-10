@@ -39,96 +39,13 @@ public class RejectionReasonService extends BaseRequisitionService<RejectionReas
   }
 
   /**
-   * Return one object from service.
+   * Return one rejection reason from the requisition service.
    *
-   * @param id UUID of requesting object.
-   * @return Requesting reference data object.
+   * @param id UUID of rejection reason.
+   * @return Requesting requisition data object - rejection reason.
    */
   public RejectionReasonDto getRejectionReason(UUID id) {
     return findOne(id);
   }
-
-  // private RejectionReasonDto getResult(String resourceUrl, RequestParameters parameters) {
-  //   String url = getServiceUrl() + getUrl() + resourceUrl;
-
-  //   ResponseEntity<RejectionReasonDto> response = runWithTokenRetry(() -> restTemplate.exchange(
-  //       RequestHelper.createUri(url, parameters),
-  //       HttpMethod.GET,
-  //       RequestHelper.createEntity(
-  //             RequestHeaders.init().setAuth(authService.obtainAccessToken())),
-  //       RejectionReasonDto.class
-  //   ));
-
-  //   return response.getBody();
-  // }
-
-  // /**
-  //  * Return one object from service.
-  //  *
-  //  * @param resourceUrl UUID of requesting object.
-  //  *  @param parameters UUID of requesting object.
-  //  */
-  // public void fetch(String resourceUrl,
-  //      RequestParameters parameters) {
-  //   String url = getServiceUrl() + getUrl() + StringUtils.defaultIfBlank(resourceUrl, "");
-  //   //String url = "http://192.168.8.104/api/rejectionReasons/" + resourceUrl;
-  //   RequestParameters params = RequestParameters
-  //       .init()
-  //       .setAll(parameters);
-
-  //   try {
-  //     LOGGER.error(runWithTokenRetry(() -> restTemplate.exchange(
-  //         RequestHelper.createUri(url, params),
-  //         HttpMethod.GET,
-  //         RequestHelper.createEntity(
-  //             RequestHeaders.init().setAuth(authService.obtainAccessToken())),
-  //         RejectionReasonDto.class)).getBody().toString());
-  //   } catch (HttpStatusCodeException ex) {
-  //     // rest template will handle 404 as an exception, instead of returning null
-  //     if (HttpStatus.NOT_FOUND == ex.getStatusCode()) {
-  //       logger.warn(
-  //           "{} matching params does not exist. Params: {}",
-  //           getResultClass().getSimpleName(), parameters
-  //       );
-
-  //       LOGGER.error("null value");
-  //     } else {
-  //       throw buildDataRetrievalException(ex);
-  //     }
-  //   }
-  // }
-
-  // private DataRetrievalException buildDataRetrievalException(HttpStatusCodeException ex) {
-  //   return new DataRetrievalException(getResultClass().getSimpleName(), ex);
-  // }
-
-  // /**
-  //  * Retrieves a list of rejection reasons based on the provided rejection reason IDs.
-  //  *
-  //  * @param rejectionReasonIds The list of rejection reason IDs to retrieve.
-  //  * @return A list of RejectionReasonDto objects representing rejection reasons.
-  //  */
-  // public List<RejectionReasonDto> getRejectionReasons(Set<UUID> rejectionReasonIds) {
-  //   String rejectionReasonsEndpoint = "http://192.168.8.104" + "/api/rejectionReasons";
-
-  //   List<RejectionReasonDto> rejectionReasonList = new ArrayList<>();
-
-  //   for (UUID rejectionReasonId : rejectionReasonIds) {
-  //     String individualRejectionReasonEndpoint = 
-  //         rejectionReasonsEndpoint + "/" + rejectionReasonId;
-
-  //     ResponseEntity<RejectionReasonDto> responseEntity = restTemplate.exchange(
-  //         individualRejectionReasonEndpoint,
-  //         HttpMethod.GET,
-  //         RequestHelper.createEntity(
-  //             RequestHeaders.init().setAuth(authService.obtainAccessToken())),
-  //         RejectionReasonDto.class
-  //     );
-
-  //     rejectionReasonList.add(responseEntity.getBody());
-  //   }
-
-  //   return rejectionReasonList;
-  // }
 
 }

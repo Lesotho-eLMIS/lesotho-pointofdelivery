@@ -17,19 +17,20 @@ package org.openlmis.pointofdelivery.domain.event;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
-import javax.persistence.CollectionTable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.openlmis.pointofdelivery.domain.BaseEntity;
+import org.openlmis.pointofdelivery.domain.qualitychecks.Discrepancy;
 
 @Entity
 @Data
@@ -57,21 +58,27 @@ public class PointOfDeliveryEvent extends BaseEntity {
 
   private String packedBy;
 
-  private Integer numberOfCartons;
+  private Integer cartonsQuantityOnWaybill;
 
-  private Integer numberOfContainers;
+  private Integer cartonsQuantityShipped;
 
-  private Integer numberOfCartonsRejected;
+  private Integer cartonsQuantityAccepted;
 
-  private Integer numberOfContainersRejected;
+  private Integer cartonsQuantityRejected;
+
+  private Integer containersQuantityOnWaybill;
+
+  private Integer containersQuantityShipped;
+
+  private Integer containersQuantityAccepted;
+
+  private Integer containersQuantityRejected;
 
   private String remarks;
 
-  @ElementCollection(fetch = FetchType.LAZY, targetClass = UUID.class)
-  @CollectionTable(
-      name = "pod_events_rejection_reasons", 
-      joinColumns = @JoinColumn(name = "pod_event_id"))
-  @Column(name = "rejection_reason_id")
-  private Set<UUID> rejectionReasonIds;
+  // One-to-many relationship with Discrepancy
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "point_of_delivery_event_id") // foreign key in Discrepancy table
+  private List<Discrepancy> discrepancies;
 
 }

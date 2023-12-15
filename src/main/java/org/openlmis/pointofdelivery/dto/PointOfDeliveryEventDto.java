@@ -20,9 +20,8 @@ import static java.time.ZonedDateTime.now;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -31,20 +30,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.openlmis.pointofdelivery.domain.event.PointOfDeliveryEvent;
-import org.openlmis.pointofdelivery.dto.requisition.RejectionReasonDto;
-import org.openlmis.pointofdelivery.service.requisition.RejectionReasonService;
+import org.openlmis.pointofdelivery.domain.qualitychecks.Discrepancy;
+import org.openlmis.pointofdelivery.dto.DiscrepancyDto;
 import org.openlmis.pointofdelivery.util.PointOfDeliveryEventProcessContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PointOfDeliveryEventDto {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(PointOfDeliveryEventDto.class);
-  private static RejectionReasonService rejectionReasonService = new RejectionReasonService();
 
   private UUID id;
 
@@ -65,18 +59,25 @@ public class PointOfDeliveryEventDto {
 
   private String packedBy;
 
-  private Integer numberOfCartons;
+  private Integer cartonsQuantityOnWaybill;
 
-  private Integer numberOfContainers;
+  private Integer cartonsQuantityShipped;
 
-  private Integer numberOfCartonsRejected;
+  private Integer cartonsQuantityAccepted;
 
-  private Integer numberOfContainersRejected;
+  private Integer cartonsQuantityRejected;
+
+  private Integer containersQuantityOnWaybill;
+
+  private Integer containersQuantityShipped;
+
+  private Integer containersQuantityAccepted;
+
+  private Integer containersQuantityRejected;
 
   private String remarks;
 
-  //private List<UUID> rejectionReasonIds;
-  private List<RejectionReasonDto> rejectionReasons;
+  private List<DiscrepancyDto> discrepancies;
 
   private PointOfDeliveryEventProcessContext context;
 
@@ -86,16 +87,20 @@ public class PointOfDeliveryEventDto {
    * @return the converted jpa model object.
    */
   public PointOfDeliveryEvent toPointOfDeliveryEvent() {
-    Set<UUID> rejectionReasonIds = new HashSet<>();
-    for (RejectionReasonDto rejectionReasonDto : rejectionReasons) {
-      rejectionReasonIds.add(rejectionReasonDto.getId());
+
+    List<Discrepancy> discrepanciesList = new ArrayList<>();
+    for (DiscrepancyDto discrepancydto : discrepancies) {
+      discrepanciesList.add(discrepancydto.toDiscrepancy());
     }
+
     PointOfDeliveryEvent pointOfDeliveryEvent = new PointOfDeliveryEvent(
         sourceId, sourceFreeText, destinationId, destinationFreeText, 
         context.getCurrentUserId(), context.getCurrentUserNames(), now(), 
-        referenceNumber, packingDate, packedBy, numberOfCartons, 
-        numberOfContainers, numberOfCartonsRejected,
-        numberOfContainersRejected, remarks, rejectionReasonIds);
+        referenceNumber, packingDate, packedBy, cartonsQuantityOnWaybill, 
+        cartonsQuantityShipped, cartonsQuantityAccepted, cartonsQuantityRejected,
+        containersQuantityOnWaybill, containersQuantityShipped, 
+        containersQuantityAccepted, containersQuantityRejected,
+        remarks, discrepanciesList);
     return pointOfDeliveryEvent;
   }
 

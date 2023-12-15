@@ -23,8 +23,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.openlmis.pointofdelivery.domain.event.PointOfDeliveryEvent;
+import org.openlmis.pointofdelivery.domain.qualitychecks.Discrepancy;
+import org.openlmis.pointofdelivery.dto.DiscrepancyDto;
 import org.openlmis.pointofdelivery.dto.PointOfDeliveryEventDto;
-import org.openlmis.pointofdelivery.dto.requisition.RejectionReasonDto;
 import org.openlmis.pointofdelivery.exception.ResourceNotFoundException;
 import org.openlmis.pointofdelivery.repository.PointOfDeliveryEventsRepository;
 import org.openlmis.pointofdelivery.service.requisition.RejectionReasonService;
@@ -63,6 +64,16 @@ public class PointOfDeliveryService {
       return Collections.emptyList();
     }
     return podToDto(pointOfDeliveryEvents);
+  }
+
+  /**
+   * Get a Point of Delivery event by id.
+   *
+   * @param id point of delivery event id.
+   * @return a pod event.
+   */
+  public Optional<PointOfDeliveryEvent> getPointOfDeliveryEventById(UUID id) {
+    return pointOfDeliveryEventsRepository.findById(id);
   }
 
   /**
@@ -122,24 +133,43 @@ public class PointOfDeliveryService {
     if (incomingPodEvent.getPackedBy() != null) {
       existingPodEvent.setPackedBy(incomingPodEvent.getPackedBy());
     }
-    if (incomingPodEvent.getNumberOfCartons() != null) {
-      existingPodEvent.setNumberOfCartons(incomingPodEvent.getNumberOfCartons());
+    if (incomingPodEvent.getCartonsQuantityOnWaybill() != null) {
+      existingPodEvent.setCartonsQuantityOnWaybill(
+          incomingPodEvent.getCartonsQuantityOnWaybill());
     }
-    if (incomingPodEvent.getNumberOfContainers() != null) {
-      existingPodEvent.setNumberOfContainers(incomingPodEvent.getNumberOfContainers());
+    if (incomingPodEvent.getCartonsQuantityShipped() != null) {
+      existingPodEvent.setCartonsQuantityShipped(
+          incomingPodEvent.getCartonsQuantityShipped());
     }
-    if (incomingPodEvent.getNumberOfCartonsRejected() != null) {
-      existingPodEvent.setNumberOfCartonsRejected(incomingPodEvent.getNumberOfCartonsRejected());
+    if (incomingPodEvent.getCartonsQuantityAccepted() != null) {
+      existingPodEvent.setCartonsQuantityAccepted(
+          incomingPodEvent.getCartonsQuantityAccepted());
     }
-    if (incomingPodEvent.getNumberOfContainersRejected() != null) {
-      existingPodEvent.setNumberOfContainersRejected(
-          incomingPodEvent.getNumberOfContainersRejected());
+    if (incomingPodEvent.getCartonsQuantityRejected() != null) {
+      existingPodEvent.setCartonsQuantityRejected(
+          incomingPodEvent.getCartonsQuantityRejected());
+    }
+    if (incomingPodEvent.getContainersQuantityOnWaybill() != null) {
+      existingPodEvent.setContainersQuantityOnWaybill(
+          incomingPodEvent.getContainersQuantityOnWaybill());
+    }
+    if (incomingPodEvent.getContainersQuantityShipped() != null) {
+      existingPodEvent.setContainersQuantityShipped(
+          incomingPodEvent.getContainersQuantityShipped());
+    }
+    if (incomingPodEvent.getContainersQuantityAccepted() != null) {
+      existingPodEvent.setContainersQuantityAccepted(
+          incomingPodEvent.getContainersQuantityAccepted());
+    }
+    if (incomingPodEvent.getContainersQuantityRejected() != null) {
+      existingPodEvent.setContainersQuantityRejected(
+          incomingPodEvent.getContainersQuantityRejected());
     }
     if (incomingPodEvent.getRemarks() != null) {
       existingPodEvent.setRemarks(incomingPodEvent.getRemarks());
     }
-    if (incomingPodEvent.getRejectionReasonIds() != null) {
-      existingPodEvent.setRejectionReasonIds(incomingPodEvent.getRejectionReasonIds());
+    if (incomingPodEvent.getDiscrepancies() != null) {
+      existingPodEvent.setDiscrepancies(incomingPodEvent.getDiscrepancies());
     }
     return existingPodEvent;
   }
@@ -189,10 +219,6 @@ public class PointOfDeliveryService {
    * @return created dto.
    */
   private PointOfDeliveryEventDto podToDto(PointOfDeliveryEvent pointOfDeliveryEvent) {
-    List<RejectionReasonDto> rejectionReasonDtos = new ArrayList<>();
-    for (UUID rejectionId : pointOfDeliveryEvent.getRejectionReasonIds()) {
-      rejectionReasonDtos.add(rejectionReasonService.findOne(rejectionId));
-    }
     return PointOfDeliveryEventDto.builder()
       .id(pointOfDeliveryEvent.getId())
       .sourceId(pointOfDeliveryEvent.getSourceId())
@@ -205,12 +231,47 @@ public class PointOfDeliveryService {
       .referenceNumber(pointOfDeliveryEvent.getReferenceNumber())
       .packingDate(pointOfDeliveryEvent.getPackingDate())
       .packedBy(pointOfDeliveryEvent.getPackedBy())
-      .numberOfCartons(pointOfDeliveryEvent.getNumberOfCartons())
-      .numberOfContainers(pointOfDeliveryEvent.getNumberOfContainers())
-      .numberOfCartonsRejected(pointOfDeliveryEvent.getNumberOfCartonsRejected())
-      .numberOfContainersRejected(pointOfDeliveryEvent.getNumberOfContainersRejected())
+      .cartonsQuantityOnWaybill(pointOfDeliveryEvent.getCartonsQuantityOnWaybill())
+      .cartonsQuantityShipped(pointOfDeliveryEvent.getCartonsQuantityShipped())
+      .cartonsQuantityAccepted(pointOfDeliveryEvent.getCartonsQuantityAccepted())
+      .cartonsQuantityRejected(pointOfDeliveryEvent.getCartonsQuantityRejected())
+      .containersQuantityOnWaybill(pointOfDeliveryEvent.getContainersQuantityOnWaybill())
+      .containersQuantityShipped(pointOfDeliveryEvent.getContainersQuantityShipped())
+      .containersQuantityAccepted(pointOfDeliveryEvent.getContainersQuantityAccepted())
+      .containersQuantityRejected(pointOfDeliveryEvent.getContainersQuantityRejected())
       .remarks(pointOfDeliveryEvent.getRemarks())
-      .rejectionReasons(rejectionReasonDtos)
+      .discrepancies(discrepaciesToDtos(pointOfDeliveryEvent.getDiscrepancies()))
+      .build();
+  }
+
+  /**
+   * Create from jpa model.
+   *
+   * @param discrepancies inventory jpa model.
+   * @return created dto.
+   */
+  private List<DiscrepancyDto> discrepaciesToDtos(
+        Collection<Discrepancy> discrepancies) {
+
+    List<DiscrepancyDto> discrepacyDtos = new ArrayList<>(discrepancies.size());
+    discrepancies.forEach(i -> discrepacyDtos.add(discrepancyToDto(i)));
+    return discrepacyDtos;
+  }
+
+  /**
+   * Create dto from jpa model.
+   *
+   * @param discrepancy inventory jpa model.
+   * @return created dto.
+   */
+  private DiscrepancyDto discrepancyToDto(Discrepancy discrepancy) {
+
+    return DiscrepancyDto.builder()
+      .id(discrepancy.getId())
+      .rejectionReason(
+          rejectionReasonService.findOne(discrepancy.getRejectionReasonId()))
+      .shipmentType(discrepancy.getShipmentType())
+      .quantityAffected(discrepancy.getQuantityAffected())
       .build();
   }
 

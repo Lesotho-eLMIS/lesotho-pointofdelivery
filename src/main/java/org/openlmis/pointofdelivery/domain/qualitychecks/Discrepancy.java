@@ -37,6 +37,7 @@ public class Discrepancy extends BaseEntity {
   private UUID rejectionReasonId;
   private String shipmentType;
   private Integer quantityAffected;
+  private String comments;
 
   // Many-to-one relationship with PointOfDeliveryEvent
   @ManyToOne
@@ -48,10 +49,11 @@ public class Discrepancy extends BaseEntity {
    *
    */
   public Discrepancy(UUID rejectionReasonId, String shipmentType, 
-      Integer quantityAffected) {
+      Integer quantityAffected, String comments) {
     this.rejectionReasonId = rejectionReasonId;
     this.shipmentType = shipmentType;
     this.quantityAffected = quantityAffected;
+    this.comments = comments;
     // pointOfDeliveryEvent can be set later or remain null
   }
 }

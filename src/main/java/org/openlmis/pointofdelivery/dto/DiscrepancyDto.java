@@ -35,6 +35,7 @@ public class DiscrepancyDto {
   private RejectionReasonDto rejectionReason;
   private String shipmentType;
   private Integer quantityAffected;
+  private String comments;
 
   /**
    * Convert dto to jpa model.
@@ -45,7 +46,8 @@ public class DiscrepancyDto {
     Discrepancy discrepancy = new Discrepancy(
         rejectionReason.getId(),
         shipmentType,
-        quantityAffected);
+        quantityAffected,
+        comments);
 
     return discrepancy;
   }

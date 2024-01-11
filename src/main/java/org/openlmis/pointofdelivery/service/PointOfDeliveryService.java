@@ -272,6 +272,7 @@ public class PointOfDeliveryService {
           rejectionReasonService.findOne(discrepancy.getRejectionReasonId()))
       .shipmentType(discrepancy.getShipmentType())
       .quantityAffected(discrepancy.getQuantityAffected())
+      .comments(discrepancy.getComments())
       .build();
   }
 

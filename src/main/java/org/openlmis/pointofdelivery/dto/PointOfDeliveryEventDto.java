@@ -17,6 +17,7 @@
 package org.openlmis.pointofdelivery.dto;
 
 import static java.time.ZonedDateTime.now;
+import static java.util.Collections.emptyList;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -88,10 +89,10 @@ public class PointOfDeliveryEventDto {
    */
   public PointOfDeliveryEvent toPointOfDeliveryEvent() {
 
-    List<Discrepancy> discrepanciesList = new ArrayList<>();
-    for (DiscrepancyDto discrepancydto : discrepancies) {
-      discrepanciesList.add(discrepancydto.toDiscrepancy());
-    }
+    // List<Discrepancy> discrepanciesList = new ArrayList<>();
+    // for (DiscrepancyDto discrepancydto : discrepancies) {
+    //   discrepanciesList.add(discrepancydto.toDiscrepancy());
+    // }
 
     PointOfDeliveryEvent pointOfDeliveryEvent = new PointOfDeliveryEvent(
         sourceId, sourceFreeText, destinationId, destinationFreeText, 
@@ -100,7 +101,7 @@ public class PointOfDeliveryEventDto {
         cartonsQuantityShipped, cartonsQuantityAccepted, cartonsQuantityRejected,
         containersQuantityOnWaybill, containersQuantityShipped, 
         containersQuantityAccepted, containersQuantityRejected,
-        remarks, discrepanciesList);
+        remarks, discrepancies());
     return pointOfDeliveryEvent;
   }
 
@@ -110,6 +111,21 @@ public class PointOfDeliveryEventDto {
 
   public boolean hasDestinationId() {
     return this.destinationId != null;
+  }
+
+  /**
+   * Gets discrepancies as {@link Discrepancy}.
+   */
+  public List<Discrepancy> discrepancies() {
+    if (null == discrepancies) {
+      return emptyList();
+    }
+
+    List<Discrepancy> discrepanciesList = new ArrayList<>();
+    for (DiscrepancyDto discrepancydto : discrepancies) {
+      discrepanciesList.add(discrepancydto.toDiscrepancy());
+    }
+    return discrepanciesList;
   }
 
 }
